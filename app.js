@@ -192,7 +192,7 @@ const renderMainPage = (countriesData) => {
                 </li>
                </ul>
               <div class="starDiv">
-              <span id="starDivContent"><i class="fa-solid fa-star fa-xl"></i></span>
+              <span id="starDivContent"><i id="toBeStared" class="fa-solid fa-star fa-xl"></i></span>
               </div>
            </div>
            </div>
@@ -201,6 +201,8 @@ const renderMainPage = (countriesData) => {
     isFavourite(item[1].name.common);
   });
 };
+
+//RENDER FAVOURITE COUNTRIES
 
 function renderFavourites() {
   const favourites = document.querySelector(".favouritesList");
@@ -221,6 +223,8 @@ function renderFavourites() {
   });
   favourites.innerHTML = favouritesListContainer;
 }
+
+//DRAG AND DROP FUNCTIONS
 
 function dragstartHandler(ev) {
   console.log("dragStart");
@@ -271,6 +275,8 @@ function dragendHandler(ev) {
   dataList.clear();
 }
 
+//REMOVE FACOURITE COUNTRY FROM ARRAY
+
 function removeFavourite(ev) {
   const tempCountry2 = tempCountry.find((country) => {
     return country.name.common === ev.target.id;
@@ -284,12 +290,14 @@ function removeFavourite(ev) {
   renderFavourites();
 }
 
+//CHECK IF COUNTRY IS FAVOURITE OR NOT
+
 function isFavourite(country) {
   // console.log(favouritesArray);
   const found = favouritesArray.some((el) => el.name === country);
   if (found) {
-    console.log(country, "is a favourite and should be yellow stared");
-    document.getElementById("starDivContent").style.color = "oranged";
+    console.log(country, "is a favourite and should be orange stared");
+    document.getElementById("toBeStared").style.color = "oranged";
   }
 }
 
