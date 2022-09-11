@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://kit.fontawesome.com/0549863886.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="style.css" />
+    <title>Flags Page</title>
+  </head>
+  <body>
+    <nav>
+      <div class="navBar">
+        <h2>Where in the world?</h2>
+        <a href="#" class="darkModeToggle" id="darkModeToggle">
+          <i id="iconToggle" class="fas fa-moon"></i>Dark Mode
+        </a>
+      </div>
+    </nav>
+
+    <div id="searchBar" class="wrapper">
+      <div class="search">
+        <i class="fas fa-search"></i>
+        <input
+          class="search-input"
+          id="search-input"
+          type="text"
+          placeholder="Search for a country..."
+        />
+      </div>
+      <div class="filter-dropdown">
+        <button class="dropbtn">
+          <span>Filter by Region</span>
+          <span><i class="fas fa-chevron-down"></i></span>
+        </button>
+        <div class="dropdown-content">
+          <div class="regions">
+            <a href="#" class="region">Africa</a>
+            <a href="#" class="region">America</a>
+            <a href="#" class="region">Asia</a>
+            <a href="#" class="region">Europe</a>
+            <a href="#" class="region">Oceania</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mainContainer">
+      <div class="favourites">
+        <h2 class="favouritesTitle">Favourites</h2>
+        <div class="favouritesList" id="style-1" ondrop="dropHandler(event);" ondragover="dragoverHandler(event);" ></div>
+      </div>
+      <div class="countries" id="style-1"></div>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>
