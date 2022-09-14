@@ -192,9 +192,11 @@ const renderMainPage = (countriesData) => {
                 </li>
                </ul>
               <div class="starDiv">
-              <span id="starDivContent" onClick="addFavCountryUsingStar(event)"><i id="${
+              <span id="starDivContent"><i id="${
                 item[1].name.common
-              }" class="fa-solid fa-star fa-xl stared"></i></span>
+              }" onClick="addFavCountryUsingStar(event)" class="fa-solid fa-star fa-xl ${
+      item[1].name.common
+    }"></i></span>
               </div>
            </div>
            </div>
@@ -212,13 +214,13 @@ function renderFavourites() {
 
   favouritesArray.forEach((item) => {
     favouritesListContainer += `
-      <div class="favouriteCountry" id="${item.name}" draggable="true" ondragstart="drag(event)" onClick="removeFavourite(event)">
+      <div class="favouriteCountry" draggable="true" ondragstart="drag(event)">
       <div class="flagCountry">
       <img class="favouriteCountryImage" src="${item.flag}" alt="${item.name}">
         <span class="favouriteCountryName">${item.name}<span>
         </div>
         <div class="remove">
-        <span class="removeFavourite"><i class="fa-solid fa-circle-xmark  text-red"></i></span>
+        <span class="removeFavourite"><i id="${item.name}" onClick="removeFavourite(event)" class="fa-solid fa-circle-xmark fa-lg"></i></span>
         </div>
       </div>
     `;
@@ -229,21 +231,17 @@ function renderFavourites() {
 //DRAG AND DROP FUNCTIONS
 
 function dragstartHandler(ev) {
-  console.log("dragStart");
   const dataList = ev.dataTransfer.items;
   console.log(ev.target.id);
   dataList.add(ev.target.id, "text/plain");
   const tempCountry2 = tempCountry.find((country) => {
     return country.name.common === ev.target.id;
-    // country[1].capital;
   });
-  console.log(tempCountry2);
   ev.dataTransfer.setData("countryName", tempCountry2.name.common);
   ev.dataTransfer.setData("countryFlag", tempCountry2.flags.svg);
 }
 
 function dropHandler(ev) {
-  console.log("Drop");
   console.log(ev.dataTransfer.getData("countryName"));
   if (
     favouritesArray.some(
@@ -263,13 +261,11 @@ function dropHandler(ev) {
 }
 
 function dragoverHandler(ev) {
-  console.log("dragOver");
   ev.preventDefault();
   ev.dataTransfer.dropEffect = "move";
 }
 
 function dragendHandler(ev) {
-  console.log("dragEnd");
   const dataList = ev.dataTransfer.items;
   for (let i = 0; i < dataList.length; i++) {
     dataList.remove(i);
@@ -284,10 +280,10 @@ function removeFavourite(ev) {
     return country.name.common === ev.target.id;
   });
   let favouriteToRemove = tempCountry2.name.common;
-  let filteredPeople = favouritesArray.filter(
+  let filteredFavourites = favouritesArray.filter(
     (item) => item.name !== favouriteToRemove
   );
-  favouritesArray = [...filteredPeople];
+  favouritesArray = [...filteredFavourites];
   localStorage.setItem("favouriteCoutries", JSON.stringify(favouritesArray));
   renderFavourites();
 }
@@ -295,33 +291,35 @@ function removeFavourite(ev) {
 //CHECK IF COUNTRY IS FAVOURITE OR NOT
 
 function isFavourite(country) {
-  // console.log(favouritesArray);
-  const found = favouritesArray.some((el) => el.name === country);
-  if (found) {
+  if (favouritesArray.some((favourite) => favourite.name === country)) {
     console.log(country, "is a favourite and should be orange stared");
-    console.log(document.getElementById(country).id);
-    // let str = document.getElementById(country).id;
-    // str.style.color = "oranged";
+    let col = document.getElementsByClassName(country);
+    col[0].style.color = "#FFA500";
   }
 }
 
 //ADD FAV COUNTRY USING STAR ICON
 
 function addFavCountryUsingStar(ev) {
-  const star = document.querySelector(".stared");
-  console.log("add from icon");
-  console.log(ev.target.id);
-  console.log(star.id);
-  console.log(document.getElementById(star.id).id);
-  var boxElement = document.getElementById(star.id).id;
-  console.log(boxElement);
-  boxElement.style.color = "red";
-  // const tempCountry2 = tempCountry.find((country) => {
-  //   return country.name.common === ev.target.id;
-  // });
-  // console.log(tempCountry2);
-  // ev.dataTransfer.setData("countryName", tempCountry2.name.common);
-  // ev.dataTransfer.setData("countryFlag", tempCountry2.flags.svg);
+  const tempCountry2 = tempCountry.find((country) => {
+    return country.name.common === ev.target.id;
+  });
+  if (
+    favouritesArray.some(
+      (favourite) => favourite.name === tempCountry2.name.common
+    )
+  ) {
+    alert("This country is already in your favourites");
+    return;
+  }
+  favouritesArray.push({
+    name: tempCountry2.name.common,
+    flag: tempCountry2.flags.svg,
+  });
+  localStorage.setItem("favouriteCoutries", JSON.stringify(favouritesArray));
+  let col = document.getElementsByClassName(tempCountry2.name.common);
+  col[0].style.color = "#FFA500";
+  renderFavourites();
 }
 
 //RENDER DETAILED COUNTRY PAGE
@@ -348,7 +346,6 @@ const renderDetailedPage = (countriesData) => {
   const language = languagesArr.join(", ");
   threeBorders = country.borders.slice(0, 3);
   const borders = Object.assign({}, threeBorders);
-  // console.log(borders);
 
   mainDiv += `
 <div class="countryImage">
