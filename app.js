@@ -192,7 +192,9 @@ const renderMainPage = (countriesData) => {
                 </li>
                </ul>
               <div class="starDiv">
-              <span id="starDivContent"><i id="toBeStared" class="fa-solid fa-star fa-xl"></i></span>
+              <span id="starDivContent" onClick="addFavCountryUsingStar(event)"><i id="${
+                item[1].name.common
+              }" class="fa-solid fa-star fa-xl stared"></i></span>
               </div>
            </div>
            </div>
@@ -297,8 +299,29 @@ function isFavourite(country) {
   const found = favouritesArray.some((el) => el.name === country);
   if (found) {
     console.log(country, "is a favourite and should be orange stared");
-    document.getElementById("toBeStared").style.color = "oranged";
+    console.log(document.getElementById(country).id);
+    // let str = document.getElementById(country).id;
+    // str.style.color = "oranged";
   }
+}
+
+//ADD FAV COUNTRY USING STAR ICON
+
+function addFavCountryUsingStar(ev) {
+  const star = document.querySelector(".stared");
+  console.log("add from icon");
+  console.log(ev.target.id);
+  console.log(star.id);
+  console.log(document.getElementById(star.id).id);
+  var boxElement = document.getElementById(star.id).id;
+  console.log(boxElement);
+  boxElement.style.color = "red";
+  // const tempCountry2 = tempCountry.find((country) => {
+  //   return country.name.common === ev.target.id;
+  // });
+  // console.log(tempCountry2);
+  // ev.dataTransfer.setData("countryName", tempCountry2.name.common);
+  // ev.dataTransfer.setData("countryFlag", tempCountry2.flags.svg);
 }
 
 //RENDER DETAILED COUNTRY PAGE
