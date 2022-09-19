@@ -4,6 +4,7 @@ Global variables for favourites countries
 let tempCountry = [];
 let favouritesArray = [];
 let allCountriesArray = [];
+let timerId;
 /*
 The code below is responsible for switching mode from dark to light, vise versa
 */
@@ -88,14 +89,14 @@ let loadHomeBar = () => {
       const value = e.target.value.toLowerCase();
       /**
       @todo: 
-            if (value.length != 0) {
-              setTimeout(() => getSearchedCountry(value), e.preventDefault(), 500);
-            } else {
-              e.target.value = "";
-            }
       **/
       if (value.length != 0) {
-        setTimeout(() => getSearchedCountry(value), e.preventDefault(), 1500);
+        clearTimeout(timerId);
+        timerId = setTimeout(
+          () => getSearchedCountry(value),
+          e.preventDefault(),
+          150
+        );
       } else {
         e.target.value = "";
       }
@@ -397,25 +398,25 @@ ${
   Object.keys(borders).length === 0
     ? ""
     : `
-   <div class="borderCountries">
-       <div class="borderCountriesLabel">
-           <h4>Border Countries:</h4>
-       </div>
-       <div class="borderCountriesButton">
-       ${Object.keys(borders)
-         .map(function (key) {
-           return (
-             "<button class='borderButton'  value='" +
-             borders[key] +
-             "'>" +
-             borders[key] +
-             "</button>"
-           );
-         })
-         .join("")}    
-       </div>`
+    <div class="borderCountries">
+    <div class="borderCountriesLabel">
+    <h4>Border Countries:</h4>
+    </div>
+    <div class="borderCountriesButton">
+    ${Object.keys(borders)
+      .map(function (key) {
+        return (
+          "<button class='borderButton'  value='" +
+          borders[key] +
+          "'>" +
+          borders[key] +
+          "</button>"
+        );
+      })
+      .join("")}    
+         </div>`
 }
-   </div>`;
+        </div>`;
   countryElement.innerHTML = mainDiv;
 };
 /*
@@ -434,11 +435,22 @@ const getAllCountries = () => {
 };
 
 const getSearchedCountry = (name) => {
+  let flt = document.getElementById("filterByRegionButton").innerHTML;
   fetch(`https://restcountries.com/v3.1/name/${name}`)
     .then((response) => response.json())
     .then(function (response) {
       const countriesData2 = response;
-      renderMainPage(countriesData2);
+      if (flt !== "Filter by Region") {
+        if (countriesData2[0].region === flt) {
+          renderMainPage(countriesData2);
+        } else {
+          alert(
+            `Sorry, ${countriesData2[0].name.common} is not in ${flt}. Please kindly select the correct region or clear your filter`
+          );
+        }
+      } else {
+        renderMainPage(countriesData2);
+      }
     })
     .catch((err) => console.log("Error:", err));
 };

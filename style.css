@@ -60,7 +60,7 @@ nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 3rem;
+  margin: 3rem 3rem 3rem 3rem;
 }
 
 .search {
@@ -71,7 +71,7 @@ nav {
 
 .fa-search {
   position: absolute;
-  margin-top: 0.9rem;
+  margin-top: 1rem;
   margin-left: 1rem;
   width: 1rem;
   color: var(--input-color);
@@ -181,7 +181,6 @@ nav {
 .countries {
   display: grid;
   grid-template-columns: repeat(3, 0fr);
-  align-items: center;
   justify-content: space-between;
   max-height: 700px;
   overflow-y: scroll;
@@ -192,7 +191,7 @@ nav {
   background: var(--elements-color);
   border-radius: 5px;
   border: 1px solid transparent;
-  height: 24rem;
+  height: 25rem;
   width: 23rem;
   box-shadow: var(--box-shadow);
   margin-left: 20px;
@@ -212,11 +211,7 @@ nav {
 }
 
 .cardBody {
-  padding: 0rem 1.5rem;
-}
-
-.countryName {
-  padding-bottom: 1rem;
+  padding: 1rem 1.5rem;
 }
 
 .backButton {
@@ -235,15 +230,26 @@ nav {
 }
 
 .country {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  margin: 3rem;
-  height: 600px;
-  align-items: center;
+  width: 95%;
+  height: 60vh;
+  margin: 3rem 3rem 0 3rem;
+  display: flex;
+  flex-direction: row;
+}
+
+.countryImage {
+  width: 45%;
+  height: 100%;
+}
+
+.countryDetails {
+  width: 50%;
+  height: 100%;
+  padding: 5rem 0 0 10rem;
 }
 
 .countryImage img {
-  width: 90%;
+  width: 100%;
   height: 100%;
   object-fit: cover;
 }
@@ -333,18 +339,18 @@ nav {
   }
 
   .navBar {
-    font-size: 12px;
+    font-size: 14px;
     margin: 0 2rem;
   }
 
   .wrapper {
     flex-wrap: wrap;
     justify-content: flex-start;
-    margin: 2rem;
+    margin: 2rem 0 0 2rem;
   }
 
   .search {
-    min-width: 100%;
+    width: 90%;
   }
 
   .search-input {
@@ -364,8 +370,12 @@ nav {
   }
 
   .country {
-    grid-template-columns: repeat(1, 1fr);
-    margin: 3rem 2rem;
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    height: 70vh;
+    margin: 2rem 2rem 2rem 2rem;
+    overflow-y: scroll;
   }
 
   .countryImage img {
@@ -404,6 +414,7 @@ nav {
   .mainContainer {
     display: flex;
     flex-direction: column;
+    margin-top: 2rem;
   }
   .favourites {
     display: none;
@@ -411,17 +422,17 @@ nav {
   .card {
     width: 100%;
     margin: 0;
-    height: 28rem;
+    height: 23rem;
     margin-bottom: 1rem;
     margin-left: 0px;
   }
   .cardImg {
-    height: 15rem;
+    height: 40%;
   }
   .starDiv {
     display: flex;
     justify-content: end;
-    margin-top: 1rem;
+    margin-top: 2rem;
   }
   .darkModeToggle {
     font-size: 14px;
@@ -432,5 +443,25 @@ nav {
   .borderCountriesButton {
     display: flex;
     flex-direction: row;
+    margin-bottom: 1rem;
+  }
+  .countryName {
+    font-size: 24px;
+    padding: 0 0 1.5rem 0;
+  }
+  .countryImage {
+    width: 100%;
+  }
+  .countryDetails {
+    width: 100%;
+    padding: 0rem;
+  }
+
+  .country {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .country::-webkit-scrollbar {
+    display: none;
   }
 }
