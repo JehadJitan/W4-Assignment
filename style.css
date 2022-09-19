@@ -20,6 +20,8 @@ body {
   font-size: var(--home-fs);
   background: var(--bg-color);
   color: var(--text-color);
+  overflow: hidden;
+
 }
 
 a {
@@ -238,22 +240,24 @@ nav {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   margin: 3rem;
+  height: 600px;
+  align-items:center;
 }
 
 .countryImage img {
   width: 90%;
-  height: 22rem;
+  height: 100%;
   object-fit: cover;
 }
 
 .details {
   display: flex;
-  justify-content: space-around;
-  margin: 2rem 0;
+  justify-content: start;
 }
 .countryName {
-  padding: 1rem 0rem;
-  font-size: 1.4rem;
+  padding:  0 0 2rem 0;
+  font-size: 2rem;
+  font-weight: 800;
 }
 
 .firstColumn ul > li,
@@ -261,14 +265,15 @@ nav {
   padding-bottom: 0.5rem;
 }
 .secondColumn {
-  margin-top: 4rem;
+  padding: 5rem 10rem;
 }
 
 .borderCountries {
   display: flex;
   align-items: center;
-  margin-left: 4.5rem;
+  margin-top:2rem;
 }
+
 .borderCountriesLabel {
   margin-right: 1rem;
 }
@@ -320,6 +325,9 @@ nav {
   width: 10px;
   height: 10px;
 }
+.changeColor::before {
+  color: #ffa500;
+}
 
 @media (max-width: 768px) {
   nav {
@@ -353,8 +361,9 @@ nav {
   .countries {
     grid-template-columns: repeat(1, 1fr);
     grid-gap: 2rem;
-    margin: 0 3.5rem 0 3.5rem;
+    margin: 0 3.5rem 0 3rem;
     overflow-y: scroll;
+    
   }
 
   .country {
@@ -364,7 +373,7 @@ nav {
 
   .countryImage img {
     width: 100%;
-    object-fit: cover;
+    object-fit: fill;
   }
 
   .details {
@@ -390,6 +399,11 @@ nav {
   .secondColumn {
     margin-top: 2rem;
   }
+
+  .secondColumn {
+    padding: 0rem 0rem;
+  }
+  
 
   .mainContainer {
     display: flex;
@@ -418,5 +432,9 @@ nav {
   }
   .fa-solid {
     color: #e5e5e5;
+  }
+  .borderCountriesButton{
+    display:flex;
+    flex-direction:row;
   }
 }

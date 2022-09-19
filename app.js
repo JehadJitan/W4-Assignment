@@ -106,9 +106,14 @@ let loadHomeBar = () => {
     const searchInput = document.getElementById("search-input");
 
     searchInput.addEventListener("keyup", (e) => {
+      const value = e.target.value.toLowerCase();
+      // if (value.length != 0) {
+      //   setTimeout(() => getSearchedCountry(value), e.preventDefault(), 500);
+      // } else {
+      //   e.target.value = "";
+      // }
       if (e.key === "Enter") {
         const value = e.target.value.toLowerCase();
-
         getSearchedCountry(value);
         e.target.value = "";
         e.preventDefault();
@@ -192,17 +197,18 @@ const renderMainPage = (countriesData) => {
                 </li>
                </ul>
               <div class="starDiv">
-              <span id="starDivContent"><i id="${
+              <span id="starDivContent"><i id="icon-${
                 item[1].name.common
-              }" onClick="addFavCountryUsingStar(event)" class="fa-solid fa-star fa-xl ${
+              }" onClick="addFavCountryUsingStar(event)" class="${
       item[1].name.common
+    }1 fa-solid fa-star fa-xl ${item[1].name.common} ${
+      isFavourite(item[1].name.common) ? "changeColor" : ""
     }"></i></span>
               </div>
            </div>
            </div>
          `;
     countries.innerHTML = cardsContainer;
-    isFavourite(item[1].name.common);
   });
 };
 
@@ -255,6 +261,10 @@ function dropHandler(ev) {
     flag: ev.dataTransfer.getData("countryFlag"),
   });
   localStorage.setItem("favouriteCoutries", JSON.stringify(favouritesArray));
+  console.log(document.getElementById(`icon-${ev.target.id}`));
+  document
+    .getElementById(`icon-${ev.target.id}`)
+    .classList.toggle("changeColor");
   renderFavourites();
   ev.preventDefault();
   const data = event.dataTransfer.items;
@@ -276,8 +286,12 @@ function dragendHandler(ev) {
 //REMOVE FACOURITE COUNTRY FROM ARRAY
 
 function removeFavourite(ev) {
+  removeFavouriteUsingStar(ev.target.id);
+}
+
+function removeFavouriteUsingStar(countryToRemove) {
   const tempCountry2 = tempCountry.find((country) => {
-    return country.name.common === ev.target.id;
+    return country.name.common === countryToRemove;
   });
   let favouriteToRemove = tempCountry2.name.common;
   let filteredFavourites = favouritesArray.filter(
@@ -293,23 +307,25 @@ function removeFavourite(ev) {
 function isFavourite(country) {
   if (favouritesArray.some((favourite) => favourite.name === country)) {
     console.log(country, "is a favourite and should be orange stared");
-    let col = document.getElementsByClassName(country);
-    col[0].style.color = "#FFA500";
+    return true;
   }
+  return false;
 }
 
 //ADD FAV COUNTRY USING STAR ICON
 
 function addFavCountryUsingStar(ev) {
+  const newId = ev.target.id.replace("icon-", "");
   const tempCountry2 = tempCountry.find((country) => {
-    return country.name.common === ev.target.id;
+    return country.name.common === newId;
   });
   if (
     favouritesArray.some(
       (favourite) => favourite.name === tempCountry2.name.common
     )
   ) {
-    alert("This country is already in your favourites");
+    document.getElementById(`icon-${newId}`).classList.toggle("changeColor");
+    removeFavouriteUsingStar(newId);
     return;
   }
   favouritesArray.push({
@@ -317,8 +333,7 @@ function addFavCountryUsingStar(ev) {
     flag: tempCountry2.flags.svg,
   });
   localStorage.setItem("favouriteCoutries", JSON.stringify(favouritesArray));
-  let col = document.getElementsByClassName(tempCountry2.name.common);
-  col[0].style.color = "#FFA500";
+  document.getElementById(`icon-${newId}`).classList.toggle("changeColor");
   renderFavourites();
 }
 
@@ -440,7 +455,6 @@ const getSearchedCountry = (name) => {
     .then((response) => response.json())
     .then(function (response) {
       const countriesData2 = response;
-      console.log(countriesData2);
       renderMainPage(countriesData2);
     })
     .catch((err) => console.log("Error:", err));
@@ -451,7 +465,6 @@ const getRegionCountries = (region) => {
     .then((response) => response.json())
     .then(function (response) {
       const countriesData2 = response;
-      console.log(countriesData2);
       renderMainPage(countriesData2);
     })
     .catch((err) => console.log("Error:", err));
@@ -462,7 +475,6 @@ const getDetailedCountry = (name) => {
     .then((response) => response.json())
     .then(function (response) {
       const countriesData2 = response;
-      console.log(countriesData2);
       renderDetailedPage(countriesData2);
     })
     .catch((err) => console.log("Error:", err));
@@ -474,7 +486,6 @@ const getCountryByCode = (code) => {
     .then((response) => response.json())
     .then(function (response) {
       const countriesData2 = response;
-      console.log(countriesData2);
       renderMainPage(countriesData2);
     })
     .catch((err) => console.log("Error:", err));
