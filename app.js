@@ -1,15 +1,11 @@
-//PAGE RELOADING TIMEOUT
+/*
+Global variables for favourites countries
+*/
 let tempCountry = [];
 let favouritesArray = [];
-
-const refresh = () => {
-  setTimeout(() => {
-    window.location.reload();
-  }, 50);
-};
-
-//DARK-LIGHT-MODE
-
+/*
+The code below is responsible for switching mode from dark to light, vise versa
+*/
 const darkModeIcon = document.getElementById("iconToggle");
 const darkModeAnchor = document.getElementById("darkModeToggle");
 let darkMode = true;
@@ -40,31 +36,13 @@ const darkModeTheme = () => {
   darkMode = true;
 };
 
-//DARK-LIGHT-MODE-CLICK
-
 darkModeAnchor.addEventListener("click", (e) => {
   darkMode ? lightModeTheme() : darkModeTheme();
-  refresh();
   e.preventDefault();
 });
-
-///
-function allowDrop(ev) {
-  ev.preventDefault();
-}
-
-function drag(ev) {
-  ev.dataTransfer.setData("text", ev.target.id);
-}
-
-function drop(ev) {
-  ev.preventDefault();
-  var data = ev.dataTransfer.getData("text");
-  ev.target.appendChild(document.getElementById(data));
-}
-
-//DOM LOAD
-
+/*
+Loadind DOM
+*/
 document.addEventListener("DOMContentLoaded", () => {
   const isDark = localStorage.getItem("isDark");
   isDark === "yes" ? darkModeTheme() : lightModeTheme();
@@ -79,18 +57,12 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 let loadHomeBar = () => {
-  //DROPDOWN
-
   const dropbtn = document.querySelector(".dropbtn");
   const dropdownContent = document.querySelector(".dropdown-content");
-
   dropbtn.addEventListener("click", (e) => {
     dropdownContent.classList.toggle("show");
     e.preventDefault();
   });
-
-  //REGIONS
-
   const regions = document.querySelectorAll(".region");
   regions.forEach((region) => {
     region.addEventListener("click", (e) => {
@@ -100,20 +72,18 @@ let loadHomeBar = () => {
       dropdownContent.classList.remove("show");
       e.preventDefault();
     });
-
-    //SEARCH FOR A COUNTRY
-
     const searchInput = document.getElementById("search-input");
-
     searchInput.addEventListener("keyup", (e) => {
       const value = e.target.value.toLowerCase();
-      // if (value.length != 0) {
-      //   setTimeout(() => getSearchedCountry(value), e.preventDefault(), 500);
-      // } else {
-      //   e.target.value = "";
-      // }
+      /**
+      @todo: 
+            if (value.length != 0) {
+              setTimeout(() => getSearchedCountry(value), e.preventDefault(), 500);
+            } else {
+              e.target.value = "";
+            }
+      **/
       if (e.key === "Enter") {
-        const value = e.target.value.toLowerCase();
         getSearchedCountry(value);
         e.target.value = "";
         e.preventDefault();
@@ -135,9 +105,9 @@ let loadHomeBar = () => {
   const countries = document.querySelector(".countries");
   countries.addEventListener("click", saveCountryName);
 };
-
-//COUNTRY PAGE EVENT LISTENERS
-
+/*
+  Country Page Event Listeners
+*/
 const loadEventListeners = () => {
   const saveCountryName = (e) => {
     if (e.target.classList.contains("country-btn")) {
@@ -149,15 +119,14 @@ const loadEventListeners = () => {
 
       const code = JSON.stringify(localStorage.getItem("country-code"));
       getCountryByCode(code);
-      refresh();
     }
   };
   const country = document.querySelector(".country");
   country.addEventListener("click", saveCountryName);
 };
-
-//MAIN PAGE RENDER
-
+/*
+  Main Page Render
+*/
 const renderMainPage = (countriesData) => {
   const countries = document.querySelector(".countries");
   favouritesArray = JSON.parse(localStorage.getItem("favouriteCoutries")) ?? [];
@@ -166,6 +135,7 @@ const renderMainPage = (countriesData) => {
   let cardsContainer = "";
 
   Object.entries(country).forEach((item) => {
+    let trimmed = item[1].name.common.substring(0, 20);
     cardsContainer += `
            <div class="card" id="${
              item[1].name.common
@@ -180,7 +150,7 @@ const renderMainPage = (countriesData) => {
           
            <div class="cardBody">
                <a data-name="${item[1].name.common}" class="country-link">
-                 <h3 class="countryName">${item[1].name.common}</h3>
+                 <h3 class="countryName">${trimmed}</h3>
                </a>
                <ul>
                  <li>
@@ -211,9 +181,9 @@ const renderMainPage = (countriesData) => {
     countries.innerHTML = cardsContainer;
   });
 };
-
-//RENDER FAVOURITE COUNTRIES
-
+/*
+  Render Favourite Countries
+*/
 function renderFavourites() {
   const favourites = document.querySelector(".favouritesList");
   let favouritesListContainer = "";
@@ -233,12 +203,11 @@ function renderFavourites() {
   });
   favourites.innerHTML = favouritesListContainer;
 }
-
-//DRAG AND DROP FUNCTIONS
-
+/*
+  Drag & Drop Functions
+*/
 function dragstartHandler(ev) {
   const dataList = ev.dataTransfer.items;
-  console.log(ev.target.id);
   dataList.add(ev.target.id, "text/plain");
   const tempCountry2 = tempCountry.find((country) => {
     return country.name.common === ev.target.id;
@@ -248,7 +217,6 @@ function dragstartHandler(ev) {
 }
 
 function dropHandler(ev) {
-  console.log(ev.dataTransfer.getData("countryName"));
   if (
     favouritesArray.some(
       (favourite) => favourite.name === ev.dataTransfer.getData("countryName")
@@ -261,11 +229,10 @@ function dropHandler(ev) {
     flag: ev.dataTransfer.getData("countryFlag"),
   });
   localStorage.setItem("favouriteCoutries", JSON.stringify(favouritesArray));
-  console.log(document.getElementById(`icon-${ev.target.id}`));
+  renderFavourites();
   document
     .getElementById(`icon-${ev.target.id}`)
     .classList.toggle("changeColor");
-  renderFavourites();
   ev.preventDefault();
   const data = event.dataTransfer.items;
 }
@@ -282,9 +249,9 @@ function dragendHandler(ev) {
   }
   dataList.clear();
 }
-
-//REMOVE FACOURITE COUNTRY FROM ARRAY
-
+/*
+  Remove Favourite Country
+*/
 function removeFavourite(ev) {
   removeFavouriteUsingStar(ev.target.id);
 }
@@ -301,19 +268,19 @@ function removeFavouriteUsingStar(countryToRemove) {
   localStorage.setItem("favouriteCoutries", JSON.stringify(favouritesArray));
   renderFavourites();
 }
-
-//CHECK IF COUNTRY IS FAVOURITE OR NOT
-
+/*
+  Check if Country is Favourite
+*/
 function isFavourite(country) {
   if (favouritesArray.some((favourite) => favourite.name === country)) {
-    console.log(country, "is a favourite and should be orange stared");
     return true;
   }
   return false;
 }
 
-//ADD FAV COUNTRY USING STAR ICON
-
+/*
+  Add Favourite Country Using Star
+*/
 function addFavCountryUsingStar(ev) {
   const newId = ev.target.id.replace("icon-", "");
   const tempCountry2 = tempCountry.find((country) => {
@@ -336,19 +303,18 @@ function addFavCountryUsingStar(ev) {
   document.getElementById(`icon-${newId}`).classList.toggle("changeColor");
   renderFavourites();
 }
-
-//RENDER DETAILED COUNTRY PAGE
-
+/*
+  Render Country Detailed Page
+*/
 const renderDetailedPage = (countriesData) => {
   const countryElement = document.querySelector(".country");
   let country = countriesData[0];
   let mainDiv = "";
-
-  //FORMAT NATIVENAME+BORDER+LANGUAGE+CURRENCY
   const nativeNames = country.name.nativeName;
   const nativeName = Object.values(nativeNames)[0].common;
   const currencies = country.currencies;
   let currencyArr = [];
+
   for (const key in currencies) {
     currencyArr.push(currencies[key].name);
   }
@@ -436,9 +402,9 @@ ${
    </div>`;
   countryElement.innerHTML = mainDiv;
 };
-
-//FETCHING APIS
-
+/*
+  Fetching APIs
+*/
 const getAllCountries = () => {
   fetch("https://restcountries.com/v3.1/all")
     .then((response) => response.json())
@@ -479,7 +445,6 @@ const getDetailedCountry = (name) => {
     })
     .catch((err) => console.log("Error:", err));
 };
-// getCountry("germany");
 
 const getCountryByCode = (code) => {
   fetch(`https://restcountries.com/v3.1/alpha/${code}`)

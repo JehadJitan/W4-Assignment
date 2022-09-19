@@ -21,7 +21,6 @@ body {
   background: var(--bg-color);
   color: var(--text-color);
   overflow: hidden;
-
 }
 
 a {
@@ -161,7 +160,7 @@ nav {
 }
 
 .favourites {
-  max-height: 700px;
+  height: 700px;
   width: 20%;
   margin: 0 0 0 3rem;
   border-radius: 5px;
@@ -182,7 +181,6 @@ nav {
 .countries {
   display: grid;
   grid-template-columns: repeat(3, 0fr);
-  /* grid-gap: 1; */
   align-items: center;
   justify-content: space-between;
   max-height: 700px;
@@ -241,7 +239,7 @@ nav {
   grid-template-columns: repeat(2, 1fr);
   margin: 3rem;
   height: 600px;
-  align-items:center;
+  align-items: center;
 }
 
 .countryImage img {
@@ -255,7 +253,7 @@ nav {
   justify-content: start;
 }
 .countryName {
-  padding:  0 0 2rem 0;
+  padding: 0 0 2rem 0;
   font-size: 2rem;
   font-weight: 800;
 }
@@ -265,13 +263,13 @@ nav {
   padding-bottom: 0.5rem;
 }
 .secondColumn {
-  padding: 5rem 10rem;
+  padding: 5rem 11rem;
 }
 
 .borderCountries {
   display: flex;
   align-items: center;
-  margin-top:2rem;
+  margin-top: 2rem;
 }
 
 .borderCountriesLabel {
@@ -363,7 +361,6 @@ nav {
     grid-gap: 2rem;
     margin: 0 3.5rem 0 3rem;
     overflow-y: scroll;
-    
   }
 
   .country {
@@ -403,7 +400,6 @@ nav {
   .secondColumn {
     padding: 0rem 0rem;
   }
-  
 
   .mainContainer {
     display: flex;
@@ -433,8 +429,8 @@ nav {
   .fa-solid {
     color: #e5e5e5;
   }
-  .borderCountriesButton{
-    display:flex;
-    flex-direction:row;
+  .borderCountriesButton {
+    display: flex;
+    flex-direction: row;
   }
 }
