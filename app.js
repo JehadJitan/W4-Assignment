@@ -3,6 +3,7 @@ Global variables for favourites countries
 */
 let tempCountry = [];
 let favouritesArray = [];
+let allCountriesArray = [];
 /*
 The code below is responsible for switching mode from dark to light, vise versa
 */
@@ -67,10 +68,20 @@ let loadHomeBar = () => {
   regions.forEach((region) => {
     region.addEventListener("click", (e) => {
       const value = e.target.innerHTML.toLowerCase();
-
-      getRegionCountries(value);
-      dropdownContent.classList.remove("show");
-      e.preventDefault();
+      if (value === "clear filter") {
+        getAllCountries();
+        dropdownContent.classList.remove("show");
+        e.preventDefault();
+        document.getElementById("filterByRegionButton").innerHTML =
+          "Filter by Region";
+      } else {
+        // getRegionCountries(value);
+        getRegionCountriesDynamically(e.target.innerHTML);
+        dropdownContent.classList.remove("show");
+        e.preventDefault();
+        document.getElementById("filterByRegionButton").innerHTML =
+          e.target.innerHTML;
+      }
     });
     const searchInput = document.getElementById("search-input");
     searchInput.addEventListener("keyup", (e) => {
@@ -83,11 +94,16 @@ let loadHomeBar = () => {
               e.target.value = "";
             }
       **/
-      if (e.key === "Enter") {
-        getSearchedCountry(value);
+      if (value.length != 0) {
+        setTimeout(() => getSearchedCountry(value), e.preventDefault(), 1500);
+      } else {
         e.target.value = "";
-        e.preventDefault();
       }
+      // if (e.key === "Enter") {
+      //   getSearchedCountry(value);
+      //   e.target.value = "";
+      //   e.preventDefault();
+      // }
     });
   });
 
@@ -410,6 +426,7 @@ const getAllCountries = () => {
     .then((response) => response.json())
     .then(function (response) {
       const countriesData2 = response;
+      allCountriesArray = response;
       renderMainPage(countriesData2);
       tempCountry = response;
     })
@@ -434,6 +451,16 @@ const getRegionCountries = (region) => {
       renderMainPage(countriesData2);
     })
     .catch((err) => console.log("Error:", err));
+};
+
+const getRegionCountriesDynamically = (region) => {
+  let filtedRegionCountries = [];
+  allCountriesArray.forEach((c) => {
+    if (c.region === region) {
+      filtedRegionCountries.push(c);
+    }
+  });
+  renderMainPage(filtedRegionCountries);
 };
 
 const getDetailedCountry = (name) => {
